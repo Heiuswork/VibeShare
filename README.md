@@ -8,9 +8,9 @@ VibeShare 让你跳过这套流程：电脑负责 Vibe 和修改，手机负责�
 
 VibeShare skips that loop. The Mac vibes and edits. The phone shows the real result. VibeShare connects the two.
 
-正在 Vibe 网页？不用部署、不用上传，手机扫码即可预览。文件一有变动，访问端自动同步。
+正在 Vibe 网页？不用部署、不用上传，也不用等待代码推送，手机扫码即可预览。每次修改都会实时更新。
 
-Vibing a webpage? Skip deployment and cloud uploads. Scan the QR code to preview it on your phone, with live updates as you edit.
+Vibing a webpage? Skip deployment, file uploads, and waiting for a code push. Scan the QR code to preview it on your phone, with every edit updating in real time.
 
 macOS 桌面应用，基于 **Tauri 2 + Rust + SvelteKit**。  
 A macOS desktop app built with **Tauri 2 + Rust + SvelteKit**.
@@ -74,7 +74,7 @@ With VibeShare: join the same Wi-Fi, scan to preview, and visitor pages refresh 
 
 ## 核心卖点 / Why it works
 
-- **无需部署 / No deploy** — 跳过构建、上传和发布，直接分享本地文件。 Skip the build, upload, and publish step. Share the local files.
+- **无需部署 / No deploy** — 跳过代码推送、构建、上传和发布，直接分享本地文件。 Skip the code push, build, upload, and publish steps. Share the local files directly.
 - **访问码保护 / Access code** — 临时展示给同事、客户或朋友，不公开暴露。 Show it to teammates, clients, or friends without making it public.
 - **实时同步 / Live updates** — 电脑上继续修改，手机端自动刷新查看。 Keep editing on the Mac. The phone refreshes itself.
 

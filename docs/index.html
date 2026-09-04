@@ -6,12 +6,12 @@
     <title>VibeShare — 把刚 Vibe 出来的网页，立刻放到手机上看</title>
     <meta
       name="description"
-      content="正在 Vibe 网页？不用部署、不用上传。连上同一个 Wi-Fi，手机扫码即可预览；文件一有变动，访问端自动同步。"
+      content="正在 Vibe 网页？不用部署、不用上传，也不用等待代码推送。连上同一个 Wi-Fi，手机扫码即可预览；每次修改都会实时更新。"
     />
     <meta property="og:title" content="VibeShare — 把刚 Vibe 出来的网页，立刻放到手机上看" />
     <meta
       property="og:description"
-      content="Vibing a webpage? Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit."
+      content="Vibing a webpage? Skip deployment, file uploads, and waiting for a code push. Scan to preview on the same Wi-Fi, with every edit updating in real time."
     />
     <meta property="og:image" content="icon.png" />
     <meta name="theme-color" content="#0d1420" />
@@ -250,6 +250,40 @@
         font-size: 12px;
         font-weight: 650;
         line-height: 1.35;
+      }
+      .problem-callout {
+        position: relative;
+        z-index: 2;
+        padding: 28px 0 34px;
+        background: var(--page);
+      }
+      .problem-card {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        gap: 28px;
+        align-items: center;
+        padding: 24px 28px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: var(--sh2);
+      }
+      .problem-card h2 {
+        margin: 0;
+        color: var(--text-strong);
+        font-size: 24px;
+        line-height: 1.25;
+        letter-spacing: -0.03em;
+      }
+      .problem-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.65;
+      }
+      .problem-card p strong {
+        color: var(--blue-dark);
+        font-weight: 650;
       }
       .hero-actions {
         display: flex;
@@ -775,6 +809,7 @@
         .hero::after { display: none; }
         .hero { padding-bottom: 36px; }
         .flow-strip { grid-template-columns: 1fr 1fr; }
+        .problem-card { grid-template-columns: 1fr; gap: 10px; }
         .phone-mock { right: 10px; bottom: -18px; }
         .nav-links a[href="#how"],
         .nav-links a[href="#cases"],
@@ -789,6 +824,8 @@
         .share-panel { width: min(220px, calc(100% - 28px)); }
         .hero-actions { flex-direction: column; align-items: stretch; }
         .btn { min-height: 42px; }
+        .problem-callout { padding: 18px 0 24px; }
+        .problem-card { padding: 20px; }
         section { padding: 52px 0; }
       }
     </style>
@@ -844,10 +881,10 @@
           <h1 data-zh>把刚 Vibe 出来的网页，立刻放到手机上看</h1>
           <h1 data-en>See the webpage you just vibed on your phone—instantly</h1>
           <p class="hero-lead" data-zh>
-            不用部署，不用上传。连上同一个 Wi-Fi，手机扫码即可预览；文件一有变动，访问端自动同步。
+            不用部署，不用上传，也不用等待代码推送。连上同一个 Wi-Fi，手机扫码即可预览；每次修改都会实时更新。
           </p>
           <p class="hero-lead" data-en>
-            Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit.
+            Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with every edit updating in real time — no waiting for a code push.
           </p>
           <div class="flow-strip" aria-hidden="true">
             <div class="flow-node"><small>1</small><strong data-zh>Vibe 网页</strong><strong data-en>Vibe</strong></div>
@@ -1004,6 +1041,17 @@
       </div>
     </section>
 
+    <section class="problem-callout" aria-label="The problem VibeShare solves">
+      <div class="wrap">
+        <div class="problem-card">
+          <h2 data-zh>每次微小修改，都要等一次代码推送？</h2>
+          <h2 data-en>Do tiny changes really need another code push?</h2>
+          <p data-zh>用 VibeShare，<strong>扫码即可预览</strong>。每次修改实时更新，告别等待推送、繁琐部署和文件上传。</p>
+          <p data-en>With VibeShare, <strong>scan once and preview instantly</strong>. Every edit updates in real time — no waiting for a push, no deployment, no file uploads.</p>
+        </div>
+      </div>
+    </section>
+
     <section id="how">
       <div class="wrap">
         <div class="section-head">
@@ -1121,8 +1169,8 @@
             </span>
             <strong data-zh>无需部署</strong>
             <strong data-en>No deploy</strong>
-            <p data-zh>跳过构建、上传和发布，直接分享本地文件</p>
-            <p data-en>Skip the build, upload, and publish step. Share the local files.</p>
+            <p data-zh>跳过代码推送、构建、上传和发布，直接分享本地文件</p>
+            <p data-en>Skip the code push, build, upload, and publish steps. Share the local files directly.</p>
           </article>
           <article class="feature">
             <span class="feature-icon">
@@ -1244,13 +1292,13 @@
       const copy = {
         "zh-CN": {
           title: "VibeShare — 把刚 Vibe 出来的网页，立刻放到手机上看",
-          description: "正在 Vibe 网页？不用部署、不用上传。连上同一个 Wi-Fi，手机扫码即可预览；文件一有变动，访问端自动同步。",
-          og: "正在 Vibe 网页？不用部署、不用上传，手机扫码即可预览。文件一有变动，访问端自动同步。",
+          description: "正在 Vibe 网页？不用部署、不用上传，也不用等待代码推送。连上同一个 Wi-Fi，手机扫码即可预览；每次修改都会实时更新。",
+          og: "正在 Vibe 网页？不用部署、不用上传，也不用等待代码推送。手机扫码即可预览，每次修改实时更新。",
         },
         en: {
           title: "VibeShare — see the webpage you just vibed on your phone",
-          description: "Vibing a webpage? Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit.",
-          og: "Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit.",
+          description: "Vibing a webpage? Skip deployment, file uploads, and waiting for a code push. Scan to preview on the same Wi-Fi, with every edit updating in real time.",
+          og: "Skip deployment, file uploads, and waiting for a code push. Scan once and preview every edit in real time.",
         },
       };
 
