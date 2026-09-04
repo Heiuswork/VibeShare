@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+/build
+/.svelte-kit
+/src-tauri/target
+/src-tauri/gen
+__pycache__/
+*.pyc
+*.log

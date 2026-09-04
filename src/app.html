@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN" class="native-shell">
+  <head>
+    <script>
+      (function () {
+        try {
+          var pref = "system";
+          var raw = localStorage.getItem("vibeshare.settings.v1");
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed && (parsed.theme === "light" || parsed.theme === "dark" || parsed.theme === "system")) {
+              pref = parsed.theme;
+            }
+          }
+          var dark = pref === "dark" || (pref !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.dataset.theme = dark ? "dark" : "light";
+          document.documentElement.style.colorScheme = dark ? "dark" : "light";
+        } catch (e) {}
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VibeShare</title>
+    %sveltekit.head%
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div id="app">%sveltekit.body%</div>
+  </body>
+</html>

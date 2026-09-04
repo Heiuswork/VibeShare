@@ -1,0 +1,39 @@
+[package]
+name = "vibeshare"
+version = "0.9.0"
+description = "VibeShare desktop app"
+authors = ["VibeShare"]
+edition = "2021"
+
+[lib]
+name = "vibeshare_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+axum = { version = "0.8", features = ["form"] }
+if-addrs = "0.13"
+rand = "0.8"
+mime_guess = "2"
+notify = "7"
+percent-encoding = "2"
+hyper = { version = "1", features = ["client", "http1"] }
+hyper-util = { version = "0.1", features = ["client", "client-legacy", "http1", "tokio"] }
+http-body-util = "0.1"
+qrcode = "0.14"
+image = { version = "0.25", default-features = false, features = ["png"] }
+base64 = "0.22"
+thiserror = "2"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"
+objc2-app-kit = { version = "0.3", default-features = false, features = ["NSWindow", "NSScreen"] }
+objc2-foundation = { version = "0.3", default-features = false, features = ["NSGeometry"] }
