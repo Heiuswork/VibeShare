@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>VibeShare</title>
+    <title>VibeShare — 把刚 Vibe 出来的网页，立刻放到手机上看</title>
     <meta
       name="description"
-      content="把刚 Vibe 出来的 HTML 立刻分享给同一 Wi-Fi 里的手机。不用部署，不上云，扫码就能看。"
+      content="正在 Vibe 网页？不用部署、不用上传。连上同一个 Wi-Fi，手机扫码即可预览；文件一有变动，访问端自动同步。"
     />
-    <meta property="og:title" content="VibeShare" />
+    <meta property="og:title" content="VibeShare — 把刚 Vibe 出来的网页，立刻放到手机上看" />
     <meta
       property="og:description"
-      content="Share HTML from your Mac to any phone on the same Wi-Fi. No deploy, no cloud — scan and it's live."
+      content="Vibing a webpage? Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit."
     />
     <meta property="og:image" content="icon.png" />
     <meta name="theme-color" content="#0d1420" />
@@ -224,6 +224,33 @@
         font-size: 16px;
         line-height: 1.6;
       }
+      .flow-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 22px;
+      }
+      .flow-node {
+        padding: 10px 10px 9px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .flow-node small {
+        display: block;
+        color: var(--brand-mint);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .flow-node strong {
+        display: block;
+        margin-top: 4px;
+        color: #e7eef8;
+        font-size: 12px;
+        font-weight: 650;
+        line-height: 1.35;
+      }
       .hero-actions {
         display: flex;
         flex-wrap: wrap;
@@ -246,10 +273,13 @@
       }
 
       /* —— App mock —— */
-      .mock {
+      .hero-visual {
         position: relative;
         z-index: 2;
         margin-bottom: -48px;
+      }
+      .mock {
+        position: relative;
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 18px;
         background: var(--chrome);
@@ -327,9 +357,9 @@
           linear-gradient(180deg, #f3f5f8, #eef1f5);
       }
       .empty-card {
-        width: min(360px, 100%);
-        margin: 18px auto 0;
-        padding: 22px 20px 16px;
+        width: min(280px, calc(100% - 150px));
+        margin: 28px 0 0 8px;
+        padding: 18px 16px 14px;
         border: 1px dashed var(--line-strong);
         border-radius: 14px;
         background: rgba(255, 255, 255, 0.96);
@@ -455,6 +485,64 @@
         color: var(--muted);
         font-size: 10px;
       }
+      .phone-mock {
+        position: absolute;
+        right: -18px;
+        bottom: -28px;
+        width: 124px;
+        padding: 10px 8px 8px;
+        border-radius: 22px;
+        background: #0d1420;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+        z-index: 3;
+      }
+      .phone-notch {
+        width: 36px;
+        height: 5px;
+        margin: 0 auto 8px;
+        border-radius: 999px;
+        background: #2a3648;
+      }
+      .phone-screen {
+        min-height: 168px;
+        padding: 10px 8px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #f7f8fa, #eefaf7);
+      }
+      .phone-screen strong {
+        display: block;
+        color: var(--text-strong);
+        font-size: 10px;
+      }
+      .phone-screen p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 9px;
+        line-height: 1.45;
+      }
+      .phone-bar {
+        height: 8px;
+        margin-top: 10px;
+        border-radius: 6px;
+        background: var(--live-line);
+      }
+      .phone-bar.short { width: 62%; }
+      .phone-caption {
+        margin-top: 8px;
+        color: #9aa7b8;
+        font-size: 10px;
+        text-align: center;
+      }
+      .visual-caption {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 0 4px 8px;
+        color: #9aa7b8;
+        font-size: 11px;
+      }
 
       /* —— Sections —— */
       section { padding: 72px 0; }
@@ -575,7 +663,7 @@
 
       .steps {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 12px;
       }
       .step {
@@ -628,6 +716,16 @@
         font-size: 14px;
         line-height: 1.6;
       }
+      .bound {
+        margin-top: 16px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #c5d0de;
+        font-size: 12px;
+        line-height: 1.55;
+      }
       .dl-actions {
         display: flex;
         flex-direction: column;
@@ -670,18 +768,24 @@
       @media (max-width: 960px) {
         .hero-grid,
         .download-card { grid-template-columns: 1fr; }
-        .mock { margin-bottom: 28px; }
+        .hero-visual { margin-bottom: 28px; }
         .hero::after { display: none; }
         .hero { padding-bottom: 36px; }
+        .flow-strip { grid-template-columns: 1fr 1fr; }
+        .phone-mock { right: 10px; bottom: -18px; }
+        .nav-links a[href="#how"],
         .nav-links a[href="#cases"],
         .nav-links a[href="#features"],
         .nav-links a[href="#download"] { display: none; }
       }
       @media (max-width: 760px) {
-        .features, .cases, .more, .steps { grid-template-columns: 1fr; }
+        .features, .cases, .more, .steps, .flow-strip { grid-template-columns: 1fr; }
         .mock-body { grid-template-columns: 1fr; }
         .mock-side { display: none; }
-        .share-panel { width: min(248px, calc(100% - 28px)); }
+        .empty-card { width: min(280px, calc(100% - 132px)); }
+        .share-panel { width: min(220px, calc(100% - 28px)); }
+        .hero-actions { flex-direction: column; align-items: stretch; }
+        .btn { min-height: 42px; }
         section { padding: 52px 0; }
       }
     </style>
@@ -713,6 +817,7 @@
         </a>
         <div class="nav-spacer"></div>
         <nav class="nav-links">
+          <a href="#how"><span data-zh>流程</span><span data-en>How it works</span></a>
           <a href="#cases"><span data-zh>场景</span><span data-en>Use cases</span></a>
           <a href="#features"><span data-zh>卖点</span><span data-en>Features</span></a>
           <a href="#download"><span data-zh>下载</span><span data-en>Download</span></a>
@@ -730,17 +835,23 @@
         <div>
           <div class="kicker">
             <span class="kicker-dot"></span>
-            <span data-zh>macOS · 局域网分享</span>
-            <span data-en>macOS · LAN sharing</span>
+            <span data-zh>macOS · 正在 Vibe，手机马上看</span>
+            <span data-en>macOS · Vibe on Mac, preview on phone</span>
           </div>
-          <h1 data-zh>把刚 Vibe 出来的 HTML，立刻分享给同一 Wi-Fi 里的手机、电脑、其他设备</h1>
-          <h1 data-en>Share your Vibe HTML to phones, computers, and other devices on the same Wi-Fi</h1>
+          <h1 data-zh>把刚 Vibe 出来的网页，立刻放到手机上看</h1>
+          <h1 data-en>See the webpage you just vibed on your phone—instantly</h1>
           <p class="hero-lead" data-zh>
-            不用部署，不上云。扫码就能看。文件只在本机提供，访问者不用装应用。
+            不用部署，不用上传。连上同一个 Wi-Fi，手机扫码即可预览；文件一有变动，访问端自动同步。
           </p>
           <p class="hero-lead" data-en>
-            No deploy, no cloud. Scan and it’s live. Files stay on your machine — visitors don’t install anything.
+            Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit.
           </p>
+          <div class="flow-strip" aria-hidden="true">
+            <div class="flow-node"><small>1</small><strong data-zh>Vibe 网页</strong><strong data-en>Vibe</strong></div>
+            <div class="flow-node"><small>2</small><strong data-zh>打开 VibeShare</strong><strong data-en>Share</strong></div>
+            <div class="flow-node"><small>3</small><strong data-zh>手机扫码</strong><strong data-en>Preview</strong></div>
+            <div class="flow-node"><small>4</small><strong data-zh>修改后实时查看</strong><strong data-en>Iterate</strong></div>
+          </div>
           <div class="hero-actions">
             <a class="btn btn-on-navy" href="#download">
               <svg class="icon" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>
@@ -763,6 +874,7 @@
           </div>
         </div>
 
+        <div class="hero-visual">
         <div class="mock" aria-hidden="true">
           <div class="mock-bar">
             <span class="traffic"><i></i><i></i><i></i></span>
@@ -794,10 +906,10 @@
             </aside>
             <div class="mock-stage">
               <div class="empty-card">
-                <strong data-zh>在你的任意设备上查看你的产出，无需部署</strong>
-                <strong data-en>View your work on any device, no deploy needed</strong>
-                <p data-zh>拖入文件夹或 HTML</p>
-                <p data-en>Drop a folder or HTML file</p>
+                <strong data-zh>电脑上继续改</strong>
+                <strong data-en>Edit on your Mac</strong>
+                <p data-zh>本机预览当前页面，改完不用重新部署。</p>
+                <p data-en>Preview locally. Keep editing without deploying again.</p>
                 <div class="empty-actions">
                   <span class="mini-btn primary" data-zh>选择网站目录</span>
                   <span class="mini-btn primary" data-en>Choose site folder</span>
@@ -853,8 +965,8 @@
                       <rect x="18" y="18" width="2" height="2" fill="#0e8f74"/>
                     </svg>
                   </div>
-                  <span class="qr-caption" data-zh>扫码打开页面</span>
-                  <span class="qr-caption" data-en>Scan to open</span>
+                  <span class="qr-caption" data-zh>二维码分享</span>
+                  <span class="qr-caption" data-en>Scan to preview</span>
                   <div class="code-row">
                     <div>
                       <span class="metric-label" data-zh>访问码</span>
@@ -867,65 +979,125 @@
             </div>
           </div>
         </div>
+        <aside class="phone-mock" aria-hidden="true">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <strong data-zh>手机预览</strong>
+            <strong data-en>Phone preview</strong>
+            <p data-zh>同一 Wi-Fi 扫码打开。电脑一改，这里跟着刷新。</p>
+            <p data-en>Scan on the same Wi-Fi. Edits on the Mac refresh here.</p>
+            <div class="phone-bar"></div>
+            <div class="phone-bar short"></div>
+          </div>
+          <div class="phone-caption" data-zh>真实设备</div>
+          <div class="phone-caption" data-en>Real device</div>
+        </aside>
+        <div class="visual-caption">
+          <span data-zh>电脑编辑</span><span data-en>Edit on Mac</span>
+          <span data-zh>二维码分享</span><span data-en>Share QR</span>
+          <span data-zh>手机预览</span><span data-en>Preview on phone</span>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-zh>Vibe 网页 → 打开 VibeShare → 手机扫码 → 修改后实时查看</h2>
+          <h2 data-en>Vibe → Share → Preview → Iterate</h2>
+          <p data-zh>不是普通文件分享，而是开发过程中的即时预览桥梁。</p>
+          <p data-en>Not a generic file-sharing tool — a live preview bridge in the middle of making the page.</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <span class="step-n">1</span>
+            <strong data-zh>Vibe 网页</strong>
+            <strong data-en>Vibe</strong>
+            <p data-zh>在电脑上生成或修改当前页面。</p>
+            <p data-en>Generate or edit the page on your Mac.</p>
+          </article>
+          <article class="step">
+            <span class="step-n">2</span>
+            <strong data-zh>打开 VibeShare</strong>
+            <strong data-en>Share</strong>
+            <p data-zh>选文件夹或 HTML，出示二维码和临时访问码。</p>
+            <p data-en>Pick a folder or HTML file, then show the QR and a temporary code.</p>
+          </article>
+          <article class="step">
+            <span class="step-n">3</span>
+            <strong data-zh>手机扫码</strong>
+            <strong data-en>Preview</strong>
+            <p data-zh>同一 Wi-Fi 的手机、平板或其他电脑立刻打开。</p>
+            <p data-en>Phones, tablets, or other computers on the same Wi-Fi open it immediately.</p>
+          </article>
+          <article class="step">
+            <span class="step-n">4</span>
+            <strong data-zh>修改后实时查看</strong>
+            <strong data-en>Iterate</strong>
+            <p data-zh>电脑上继续改，访问端自动刷新，不用再部署一遍。</p>
+            <p data-en>Keep editing on the Mac. Visitors refresh themselves — no redeploy.</p>
+          </article>
+        </div>
       </div>
     </section>
 
     <section id="cases">
       <div class="wrap">
         <div class="section-head">
-          <h2 data-zh>无需部署，先在真实设备上看到你的网页</h2>
-          <h2 data-en>No deployment required. See your webpage on real devices first.</h2>
-          <p data-zh>网页还没准备正式发布，也可以马上给真实设备和真实用户看。</p>
-          <p data-en>Your page does not have to be ready to ship before people can see it on a real device.</p>
+          <h2 data-zh>网页还没准备发布，也可以马上给真实设备看</h2>
+          <h2 data-en>See it on a real device before it is ready to ship</h2>
+          <p data-zh>用户不是真的需要发布网站，只是需要让另一台设备马上看到当前结果。适合临时预览，不替代正式上线。</p>
+          <p data-en>You don’t need to publish a website. You need another device to see the current result now. Built for temporary preview — not a replacement for production hosting.</p>
         </div>
         <div class="cases">
           <article class="case">
             <span class="case-tag" data-zh>无需部署</span>
             <span class="case-tag" data-en>No deploy</span>
-            <h3 data-zh>手机端响应式调试</h3>
-            <h3 data-en>Test responsive layouts on real devices</h3>
-            <p data-zh>无需部署测试环境。在电脑上修改网页后，直接通过 VibeShare 分享到真实手机，立即检查字体、按钮、弹窗、输入框和不同屏幕尺寸下的布局表现。</p>
-            <p data-en>No staging deployment required. Share your work directly to a real phone and check typography, buttons, dialogs, inputs, and responsive layouts as you edit.</p>
+            <h3 data-zh>电脑上改了网页，手机端立即检查</h3>
+            <h3 data-en>Edit on your Mac, check on a real phone</h3>
+            <p data-zh>不需要反复部署测试环境。改完布局、按钮、弹窗或输入框，同一 Wi-Fi 的手机立刻能看真实效果。</p>
+            <p data-en>No staging environment to redeploy. Change a layout, button, dialog, or input and check the real phone immediately on the same Wi-Fi.</p>
           </article>
           <article class="case">
             <span class="case-tag" data-zh>无需部署</span>
             <span class="case-tag" data-en>No deploy</span>
-            <h3 data-zh>给客户或同事临时演示</h3>
-            <h3 data-en>Show a live demo without deploying</h3>
-            <p data-zh>无需部署，也不用发送压缩包或等待测试环境构建。刚完成一个页面或交互原型，打开 VibeShare 生成二维码，客户、产品经理或同事扫码即可查看。</p>
-            <p data-en>No deployment, zip file, or staging build required. Share a freshly finished page or prototype with clients and teammates through a QR code.</p>
+            <h3 data-zh>客户、同事扫码即可看到当前版本</h3>
+            <h3 data-en>Clients and teammates scan the current version</h3>
+            <p data-zh>不需要发压缩包或等构建。刚完成的页面或原型，打开 VibeShare 生成二维码，对方扫码就能看。</p>
+            <p data-en>No zip file, no waiting on a build. Open VibeShare, show the QR, and they see the version you just finished.</p>
           </article>
           <article class="case">
             <span class="case-tag" data-zh>无需部署</span>
             <span class="case-tag" data-en>No deploy</span>
-            <h3 data-zh>展示本地作品集或 Demo</h3>
-            <h3 data-en>Present local portfolios and prototypes</h3>
-            <p data-zh>作品还没准备好正式上线时，无需部署到服务器或静态托管平台。直接分享本地的作品集、Web 动效、游戏 Demo、交互原型、营销页面和数据可视化项目。</p>
-            <p data-en>Your work does not need to be deployed to a server or hosting platform first. Share local portfolios, web animations, game demos, prototypes, landing pages, and visualizations immediately.</p>
+            <h3 data-zh>作品还没上线，也能先给人看</h3>
+            <h3 data-en>Show a portfolio or demo before it ships</h3>
+            <p data-zh>不需要先放到服务器或静态托管。本地作品集、动效、游戏 Demo、交互原型和落地页，直接分享到手机或平板。</p>
+            <p data-en>No server or static host first. Share a local portfolio, motion piece, game demo, prototype, or landing page to a phone or tablet.</p>
           </article>
           <article class="case">
             <span class="case-tag" data-zh>无需部署</span>
             <span class="case-tag" data-en>No deploy</span>
-            <h3 data-zh>展会、活动和门店现场展示</h3>
-            <h3 data-en>Power temporary event and in-store pages</h3>
-            <p data-zh>无需提前部署活动页或配置公网服务器。现场设备连接同一网络后，打开 VibeShare，访客扫码即可访问活动页、报名页、产品介绍页或互动页面。</p>
-            <p data-en>No advance deployment or public server setup required. Put devices on the same network and let visitors scan a QR code to open event pages, signup forms, product showcases, or interactive experiences.</p>
+            <h3 data-zh>现场活动页，连上同一网络就能开</h3>
+            <h3 data-en>Open an event page on the same network</h3>
+            <p data-zh>不需要提前部署公网活动页。展会、门店或会议现场，设备连上同一 Wi-Fi 后扫码即可访问。</p>
+            <p data-en>No public event site to stand up in advance. At an exhibition, store, or meeting, devices on the same Wi-Fi scan and open the page.</p>
           </article>
           <article class="case">
             <span class="case-tag" data-zh>无需部署</span>
             <span class="case-tag" data-en>No deploy</span>
-            <h3 data-zh>教学和工作坊</h3>
-            <h3 data-en>Teach and run workshops</h3>
-            <p data-zh>无需为课程单独部署示例网站，也不需要每位学生安装开发环境。老师在电脑上运行示例网页，学生通过手机或平板扫码即可查看结果。</p>
-            <p data-en>No separate website deployment or development environment setup required. Run an example page on one Mac and let students view it instantly on their phones or tablets.</p>
+            <h3 data-zh>课堂上立刻看到老师电脑上的示例</h3>
+            <h3 data-en>Students see the example from the teacher’s Mac</h3>
+            <p data-zh>不需要为课程单独部署示例站，也不需要每位学生装开发环境。老师运行页面，学生扫码查看结果。</p>
+            <p data-en>No class website to deploy, and no development setup on every device. Run the example on one Mac; students scan to see it.</p>
           </article>
           <article class="case">
             <span class="case-tag" data-zh>无需部署</span>
             <span class="case-tag" data-en>No deploy</span>
-            <h3 data-zh>内网环境下的安全临时分享</h3>
-            <h3 data-en>Share privately on a local network</h3>
-            <p data-zh>无需部署到云端，也不用把尚未公开的页面放到公网。原型、内部工具、客户专属 Demo 或测试页面可以只在局域网内分享，并配合临时访问码和自动停止时间控制访问范围。</p>
-            <p data-en>No cloud deployment or public URL required. Share prototypes, internal tools, client demos, and unreleased pages only on your local network, protected by a temporary access code and expiry time.</p>
+            <h3 data-zh>未公开的页面，只在局域网里临时看</h3>
+            <h3 data-en>Keep unreleased pages on the local network</h3>
+            <p data-zh>不需要把测试页放到公网。原型、内部工具或客户 Demo 只在局域网分享，访问码和自动停止控制谁能进、能看多久。</p>
+            <p data-en>No public URL for a test page. Share a prototype, internal tool, or client demo on the LAN only, with an access code and expiry.</p>
           </article>
         </div>
       </div>
@@ -936,8 +1108,8 @@
         <div class="section-head">
           <h2 data-zh>三件事，够用</h2>
           <h2 data-en>Three things. That’s the product.</h2>
-          <p data-zh>和打开应用时看到的一样：先把页面送到手机上，再管谁能进、改了要不要刷新。</p>
-          <p data-en>Same three lines you see in the app: get it on a phone, decide who gets in, keep it in sync.</p>
+          <p data-zh>电脑负责生成和修改，手机负责真实预览，VibeShare 把两者连起来。</p>
+          <p data-en>The Mac generates and edits. The phone checks the real result. VibeShare connects the two.</p>
         </div>
         <div class="features">
           <article class="feature">
@@ -946,8 +1118,8 @@
             </span>
             <strong data-zh>无需部署</strong>
             <strong data-en>No deploy</strong>
-            <p data-zh>同一网络扫码，手机立刻能看</p>
-            <p data-en>Scan the QR on the same network</p>
+            <p data-zh>跳过构建、上传和发布，直接分享本地文件</p>
+            <p data-en>Skip the build, upload, and publish step. Share the local files.</p>
           </article>
           <article class="feature">
             <span class="feature-icon">
@@ -955,8 +1127,8 @@
             </span>
             <strong data-zh>访问码保护</strong>
             <strong data-en>Access code</strong>
-            <p data-zh>临时口令，不是谁扫都能进</p>
-            <p data-en>A temporary code; not everyone who scans gets in</p>
+            <p data-zh>临时展示给同事、客户或朋友，不公开暴露</p>
+            <p data-en>Show it to teammates, clients, or friends — without making it public.</p>
           </article>
           <article class="feature">
             <span class="feature-icon">
@@ -964,8 +1136,8 @@
             </span>
             <strong data-zh>实时同步</strong>
             <strong data-en>Live updates</strong>
-            <p data-zh>Vibe 出新变动，不用手动刷新</p>
-            <p data-en>Vibe a change, devices refresh themselves</p>
+            <p data-zh>电脑上继续修改，手机端自动刷新查看</p>
+            <p data-en>Keep editing on the Mac. The phone refreshes itself.</p>
           </article>
         </div>
       </div>
@@ -1018,38 +1190,6 @@
       </div>
     </section>
 
-    <section>
-      <div class="wrap">
-        <div class="section-head">
-          <h2 data-zh>三步，手机上就能看</h2>
-          <h2 data-en>Three steps, then it’s on the phone</h2>
-        </div>
-        <div class="steps">
-          <article class="step">
-            <span class="step-n">1</span>
-            <strong data-zh>选站点</strong>
-            <strong data-en>Pick a site</strong>
-            <p data-zh>拖入文件夹或 HTML，本机先预览。</p>
-            <p data-en>Drop a folder or HTML file and preview it locally.</p>
-          </article>
-          <article class="step">
-            <span class="step-n">2</span>
-            <strong data-zh>开始共享</strong>
-            <strong data-en>Start sharing</strong>
-            <p data-zh>出示二维码和临时访问码，设好时长。</p>
-            <p data-en>Show the QR and a temporary access code. Set how long it stays up.</p>
-          </article>
-          <article class="step">
-            <span class="step-n">3</span>
-            <strong data-zh>扫码打开</strong>
-            <strong data-en>Scan to open</strong>
-            <p data-zh>同一 Wi-Fi 的手机、平板或其他电脑，输入访问码就能看。</p>
-            <p data-en>Phones, tablets, or other computers on the same Wi-Fi enter the code and they’re in.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <section class="download" id="download">
       <div class="wrap">
         <div class="download-card">
@@ -1058,6 +1198,8 @@
             <h2 data-en>Download VibeShare</h2>
             <p data-zh>macOS 13+。Apple Silicon 和 Intel 各打一份。未签名，别人电脑上打开时，到系统设置 → 隐私与安全性，点「仍要打开」。</p>
             <p data-en>macOS 13+. Separate builds for Apple Silicon and Intel. The app is unsigned — on another Mac, open System Settings → Privacy & Security and click Open Anyway.</p>
+            <p class="bound" data-zh>VibeShare 适合同一局域网内的即时预览和临时分享，不替代正式部署。等网页准备好上线时，再交给服务器或静态托管平台。</p>
+            <p class="bound" data-en>VibeShare is built for instant previews and temporary sharing on the same local network. It does not replace production hosting — deploy when your page is ready to ship.</p>
           </div>
           <div class="dl-actions">
             <a class="btn btn-on-navy" href="https://github.com/Heiuswork/VibeShare/releases/download/0.9.0/VibeShare_0.9.0_aarch64.dmg">
@@ -1094,16 +1236,29 @@
       const root = document.documentElement;
       const toggle = document.getElementById("langToggle");
       const meta = document.querySelector('meta[name="description"]');
+      const og = document.querySelector('meta[property="og:description"]');
+      const ogTitle = document.querySelector('meta[property="og:title"]');
       const copy = {
-        "zh-CN": "把刚 Vibe 出来的 HTML 立刻分享给同一 Wi-Fi 里的手机。不用部署，不上云，扫码就能看。",
-        en: "Share HTML from your Mac to any phone on the same Wi-Fi. No deploy, no cloud — scan and it's live.",
+        "zh-CN": {
+          title: "VibeShare — 把刚 Vibe 出来的网页，立刻放到手机上看",
+          description: "正在 Vibe 网页？不用部署、不用上传。连上同一个 Wi-Fi，手机扫码即可预览；文件一有变动，访问端自动同步。",
+          og: "正在 Vibe 网页？不用部署、不用上传，手机扫码即可预览。文件一有变动，访问端自动同步。",
+        },
+        en: {
+          title: "VibeShare — see the webpage you just vibed on your phone",
+          description: "Vibing a webpage? Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit.",
+          og: "Skip deployment and cloud uploads. Scan to preview on the same Wi-Fi, with live updates as you edit.",
+        },
       };
 
       function setLang(lang) {
         root.lang = lang;
         localStorage.setItem("vs-lang", lang);
-        if (meta) meta.setAttribute("content", copy[lang]);
-        document.title = lang === "en" ? "VibeShare — share your Vibe HTML" : "VibeShare";
+        const pack = copy[lang];
+        document.title = pack.title;
+        if (meta) meta.setAttribute("content", pack.description);
+        if (og) og.setAttribute("content", pack.og);
+        if (ogTitle) ogTitle.setAttribute("content", pack.title);
       }
 
       const saved = localStorage.getItem("vs-lang");
