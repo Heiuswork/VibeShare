@@ -768,7 +768,10 @@
       @media (max-width: 960px) {
         .hero-grid,
         .download-card { grid-template-columns: 1fr; }
-        .hero-visual { margin-bottom: 28px; }
+        .hero-visual {
+          order: -1;
+          margin-bottom: 8px;
+        }
         .hero::after { display: none; }
         .hero { padding-bottom: 36px; }
         .flow-strip { grid-template-columns: 1fr 1fr; }
