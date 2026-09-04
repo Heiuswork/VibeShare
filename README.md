@@ -53,7 +53,7 @@ With VibeShare: join the same Wi-Fi, scan to preview, and visitor pages refresh 
 `Vibe → Share → Preview → Iterate`
 
 1. **Vibe 网页 / Vibe** — 在电脑上生成或修改当前页面。 Generate or edit the page on your Mac.
-2. **打开 VibeShare / Share** — 选文件夹或 HTML，出示二维码和临时访问码。 Pick a folder or HTML file, then show the QR and a temporary code.
+2. **打开 VibeShare / Share** — 选文件夹或 HTML，扫码并输入临时访问码。 Pick a folder or HTML file, then scan the QR and enter a temporary code.
 3. **手机扫码 / Preview** — 同一 Wi-Fi 的手机、平板或其他电脑立刻打开。 Phones, tablets, or other computers on the same Wi-Fi open it immediately.
 4. **修改后实时查看 / Iterate** — 电脑上继续改，访问端自动刷新，不用再部署一遍。 Keep editing on the Mac. Visitors refresh themselves — no redeploy.
 
@@ -101,8 +101,8 @@ With VibeShare: join the same Wi-Fi, scan to preview, and visitor pages refresh 
 
 1. 打开 VibeShare，选择网站目录或 HTML 文件。  
    Open VibeShare and choose a site folder or HTML file.
-2. 开始共享，出示二维码和临时访问码。  
-   Start sharing, then show the QR code and temporary access code.
+2. 开始共享，扫码并输入临时访问码。  
+   Start sharing, then scan the QR and enter a temporary access code.
 3. 同一 Wi-Fi 的设备扫码打开。  
    Devices on the same Wi-Fi scan to open it.
 4. 继续在电脑上修改，访问端自动刷新。  
