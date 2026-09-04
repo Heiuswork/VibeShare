@@ -2,7 +2,7 @@
 name = "vibeshare"
 version = "0.9.0"
 description = "VibeShare desktop app"
-authors = ["Xiyao Xing"]
+authors = ["Heiuswork"]
 license = "MIT"
 edition = "2021"
 
