@@ -513,6 +513,43 @@
         line-height: 1.55;
       }
 
+      .cases {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .case {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+        box-shadow: var(--sh1);
+      }
+      .case-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 12px;
+        padding: 4px 8px;
+        border-radius: var(--pill);
+        background: var(--blue-soft);
+        color: var(--blue-dark);
+        font-size: 11px;
+        font-weight: 650;
+      }
+      .case h3 {
+        margin: 0;
+        color: var(--text-strong);
+        font-size: 15px;
+        letter-spacing: -0.02em;
+      }
+      .case p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
       .more {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -636,11 +673,12 @@
         .mock { margin-bottom: 28px; }
         .hero::after { display: none; }
         .hero { padding-bottom: 36px; }
+        .nav-links a[href="#cases"],
         .nav-links a[href="#features"],
         .nav-links a[href="#download"] { display: none; }
       }
       @media (max-width: 760px) {
-        .features, .more, .steps { grid-template-columns: 1fr; }
+        .features, .cases, .more, .steps { grid-template-columns: 1fr; }
         .mock-body { grid-template-columns: 1fr; }
         .mock-side { display: none; }
         .share-panel { width: min(248px, calc(100% - 28px)); }
@@ -675,6 +713,7 @@
         </a>
         <div class="nav-spacer"></div>
         <nav class="nav-links">
+          <a href="#cases"><span data-zh>场景</span><span data-en>Use cases</span></a>
           <a href="#features"><span data-zh>卖点</span><span data-en>Features</span></a>
           <a href="#download"><span data-zh>下载</span><span data-en>Download</span></a>
           <a href="https://github.com/Heiuswork/VibeShare" target="_blank" rel="noreferrer">GitHub</a>
@@ -827,6 +866,67 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cases">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-zh>无需部署，先在真实设备上看到你的网页</h2>
+          <h2 data-en>No deployment required. See your webpage on real devices first.</h2>
+          <p data-zh>网页还没准备正式发布，也可以马上给真实设备和真实用户看。</p>
+          <p data-en>Your page does not have to be ready to ship before people can see it on a real device.</p>
+        </div>
+        <div class="cases">
+          <article class="case">
+            <span class="case-tag" data-zh>无需部署</span>
+            <span class="case-tag" data-en>No deploy</span>
+            <h3 data-zh>手机端响应式调试</h3>
+            <h3 data-en>Test responsive layouts on real devices</h3>
+            <p data-zh>无需部署测试环境。在电脑上修改网页后，直接通过 VibeShare 分享到真实手机，立即检查字体、按钮、弹窗、输入框和不同屏幕尺寸下的布局表现。</p>
+            <p data-en>No staging deployment required. Share your work directly to a real phone and check typography, buttons, dialogs, inputs, and responsive layouts as you edit.</p>
+          </article>
+          <article class="case">
+            <span class="case-tag" data-zh>无需部署</span>
+            <span class="case-tag" data-en>No deploy</span>
+            <h3 data-zh>给客户或同事临时演示</h3>
+            <h3 data-en>Show a live demo without deploying</h3>
+            <p data-zh>无需部署，也不用发送压缩包或等待测试环境构建。刚完成一个页面或交互原型，打开 VibeShare 生成二维码，客户、产品经理或同事扫码即可查看。</p>
+            <p data-en>No deployment, zip file, or staging build required. Share a freshly finished page or prototype with clients and teammates through a QR code.</p>
+          </article>
+          <article class="case">
+            <span class="case-tag" data-zh>无需部署</span>
+            <span class="case-tag" data-en>No deploy</span>
+            <h3 data-zh>展示本地作品集或 Demo</h3>
+            <h3 data-en>Present local portfolios and prototypes</h3>
+            <p data-zh>作品还没准备好正式上线时，无需部署到服务器或静态托管平台。直接分享本地的作品集、Web 动效、游戏 Demo、交互原型、营销页面和数据可视化项目。</p>
+            <p data-en>Your work does not need to be deployed to a server or hosting platform first. Share local portfolios, web animations, game demos, prototypes, landing pages, and visualizations immediately.</p>
+          </article>
+          <article class="case">
+            <span class="case-tag" data-zh>无需部署</span>
+            <span class="case-tag" data-en>No deploy</span>
+            <h3 data-zh>展会、活动和门店现场展示</h3>
+            <h3 data-en>Power temporary event and in-store pages</h3>
+            <p data-zh>无需提前部署活动页或配置公网服务器。现场设备连接同一网络后，打开 VibeShare，访客扫码即可访问活动页、报名页、产品介绍页或互动页面。</p>
+            <p data-en>No advance deployment or public server setup required. Put devices on the same network and let visitors scan a QR code to open event pages, signup forms, product showcases, or interactive experiences.</p>
+          </article>
+          <article class="case">
+            <span class="case-tag" data-zh>无需部署</span>
+            <span class="case-tag" data-en>No deploy</span>
+            <h3 data-zh>教学和工作坊</h3>
+            <h3 data-en>Teach and run workshops</h3>
+            <p data-zh>无需为课程单独部署示例网站，也不需要每位学生安装开发环境。老师在电脑上运行示例网页，学生通过手机或平板扫码即可查看结果。</p>
+            <p data-en>No separate website deployment or development environment setup required. Run an example page on one Mac and let students view it instantly on their phones or tablets.</p>
+          </article>
+          <article class="case">
+            <span class="case-tag" data-zh>无需部署</span>
+            <span class="case-tag" data-en>No deploy</span>
+            <h3 data-zh>内网环境下的安全临时分享</h3>
+            <h3 data-en>Share privately on a local network</h3>
+            <p data-zh>无需部署到云端，也不用把尚未公开的页面放到公网。原型、内部工具、客户专属 Demo 或测试页面可以只在局域网内分享，并配合临时访问码和自动停止时间控制访问范围。</p>
+            <p data-en>No cloud deployment or public URL required. Share prototypes, internal tools, client demos, and unreleased pages only on your local network, protected by a temporary access code and expiry time.</p>
+          </article>
         </div>
       </div>
     </section>
