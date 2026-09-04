@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VibeShare</title>
+    <meta
+      name="description"
+      content="把刚 Vibe 出来的 HTML 立刻分享给同一 Wi-Fi 里的手机。不用部署，不上云，扫码就能看。"
+    />
+    <meta property="og:title" content="VibeShare" />
+    <meta
+      property="og:description"
+      content="Share HTML from your Mac to any phone on the same Wi-Fi. No deploy, no cloud — scan and it's live."
+    />
+    <meta property="og:image" content="icon.png" />
+    <meta name="theme-color" content="#0d1420" />
+    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+        --ink: #202936;
+        --muted: #788394;
+        --soft: #98a2b1;
+        --faint: #b9c1cc;
+        --line: #e3e7ec;
+        --line-strong: #d7dee7;
+        --panel: #ffffff;
+        --canvas: #f7f8fa;
+        --page: #e8ebf0;
+        --chrome: #f1f3f6;
+        --text-strong: #2d394a;
+        --text-body: #445166;
+        --blue: #2f6ede;
+        --blue-dark: #2456bb;
+        --blue-soft: #ecf2ff;
+        --blue-line: #d8e5ff;
+        --brand-blue: #7fb2ff;
+        --green: #0e8f74;
+        --green-soft: #e6f7f1;
+        --brand-mint: #7ee7c7;
+        --navy: #1f2b3d;
+        --navy-deep: #0d1420;
+        --live-fill: #eefaf7;
+        --live-line: #c6e8e0;
+        --live-text: #0d5f4a;
+        --r2: 8px;
+        --r3: 10px;
+        --r4: 12px;
+        --r5: 16px;
+        --pill: 999px;
+        --sh1: 0 1px 2px rgba(31, 45, 67, 0.05);
+        --sh2: 0 4px 12px rgba(31, 45, 67, 0.07);
+        --sh3: 0 12px 32px rgba(31, 45, 67, 0.1);
+        --menu-shadow: 0 12px 28px rgba(31, 45, 67, 0.16);
+        --wrap: 1120px;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        color: var(--ink);
+        background: var(--page);
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+      }
+      img { max-width: 100%; display: block; }
+      a { color: inherit; }
+      button, .btn {
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .wrap {
+        width: min(var(--wrap), calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      /* —— Nav —— */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        backdrop-filter: blur(16px);
+        background: rgba(232, 235, 240, 0.86);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 60px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+      }
+      .brand-mark { display: block; flex: 0 0 auto; }
+      .nav-spacer { flex: 1; }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav-links a, .lang {
+        padding: 7px 10px;
+        border-radius: var(--r2);
+        color: var(--text-body);
+        text-decoration: none;
+        font-size: 13px;
+        background: transparent;
+        border: 0;
+      }
+      .nav-links a:hover, .lang:hover { background: #dde3ea; }
+      .lang {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        color: var(--muted);
+      }
+      .lang b { color: var(--text-strong); font-weight: 650; }
+
+      /* —— Buttons —— */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 38px;
+        padding: 0 16px;
+        border-radius: var(--r3);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid transparent;
+        transition: background 0.16s, border-color 0.16s, color 0.16s;
+      }
+      .btn-primary {
+        background: var(--blue);
+        color: #fff;
+      }
+      .btn-primary:hover { background: var(--blue-dark); }
+      .btn-ghost {
+        background: var(--panel);
+        color: var(--text-strong);
+        border-color: var(--line-strong);
+      }
+      .btn-ghost:hover { background: var(--canvas); }
+      .btn-on-navy {
+        background: var(--brand-blue);
+        color: var(--navy-deep);
+      }
+      .btn-on-navy:hover { background: #9cc4ff; }
+      .btn-on-navy-ghost {
+        background: transparent;
+        color: #e7eef8;
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+      .btn-on-navy-ghost:hover { background: rgba(255, 255, 255, 0.06); }
+
+      /* —— Hero —— */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background:
+          radial-gradient(900px 420px at 78% 12%, rgba(127, 178, 255, 0.22), transparent 60%),
+          radial-gradient(700px 380px at 8% 90%, rgba(126, 231, 199, 0.16), transparent 55%),
+          linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+        color: #e7eef8;
+        padding: 56px 0 0;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        height: 88px;
+        background: linear-gradient(180deg, transparent, var(--page));
+        pointer-events: none;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        gap: 48px;
+        align-items: end;
+        padding-bottom: 28px;
+      }
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+        padding: 5px 10px 5px 6px;
+        border-radius: var(--pill);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--brand-mint);
+        font-size: 12px;
+      }
+      .kicker-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--brand-mint);
+        box-shadow: 0 0 0 4px rgba(126, 231, 199, 0.16);
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(32px, 4.4vw, 48px);
+        line-height: 1.12;
+        letter-spacing: -0.035em;
+        font-weight: 700;
+      }
+      .hero-lead {
+        margin: 16px 0 0;
+        max-width: 38em;
+        color: #9aa7b8;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 22px 0 36px;
+      }
+      .chip {
+        padding: 6px 10px;
+        border-radius: var(--pill);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #c5d0de;
+        font-size: 12px;
+      }
+
+      /* —— App mock —— */
+      .mock {
+        position: relative;
+        z-index: 2;
+        margin-bottom: -48px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        background: var(--chrome);
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.38);
+        overflow: hidden;
+      }
+      .mock-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 38px;
+        padding: 0 14px;
+        background: #eceff3;
+        border-bottom: 1px solid var(--line);
+      }
+      .traffic { display: flex; gap: 6px; }
+      .traffic i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: block;
+      }
+      .traffic i:nth-child(1) { background: #ff5f57; }
+      .traffic i:nth-child(2) { background: #febc2e; }
+      .traffic i:nth-child(3) { background: #28c840; }
+      .mock-title {
+        flex: 1;
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .mock-body {
+        display: grid;
+        grid-template-columns: 188px minmax(0, 1fr);
+        min-height: 420px;
+        background: var(--page);
+      }
+      .mock-side {
+        padding: 14px 10px;
+        background: var(--chrome);
+        border-right: 1px solid var(--line);
+      }
+      .side-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 8px 14px;
+        color: var(--text-strong);
+        font-size: 13px;
+        font-weight: 650;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 38px;
+        padding: 0 10px;
+        border-radius: var(--r2);
+        color: var(--text-body);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .nav-item.active {
+        background: var(--panel);
+        color: var(--text-strong);
+        box-shadow: var(--sh1);
+        font-weight: 600;
+      }
+      .nav-item svg { color: var(--muted); flex: 0 0 auto; }
+      .nav-item.active svg { color: var(--blue); }
+      .mock-stage {
+        position: relative;
+        padding: 18px;
+        background:
+          linear-gradient(180deg, #f3f5f8, #eef1f5);
+      }
+      .empty-card {
+        width: min(360px, 100%);
+        margin: 18px auto 0;
+        padding: 22px 20px 16px;
+        border: 1px dashed var(--line-strong);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--sh2);
+      }
+      .empty-card strong {
+        display: block;
+        color: var(--text-strong);
+        font-size: 14px;
+      }
+      .empty-card p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .empty-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .mini-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        padding: 0 10px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .mini-btn.primary { background: var(--blue); color: #fff; }
+      .mini-btn.secondary {
+        background: var(--panel);
+        color: var(--text-strong);
+        border: 1px solid var(--line-strong);
+      }
+      .share-panel {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 248px;
+        padding: 12px;
+        border: 1px solid var(--line-strong);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--menu-shadow);
+        backdrop-filter: blur(14px);
+      }
+      .share-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        color: var(--text-strong);
+        font-size: 13px;
+        font-weight: 650;
+      }
+      .live-card {
+        padding: 10px;
+        border: 1px solid var(--live-line);
+        border-radius: 12px;
+        background: var(--live-fill);
+      }
+      .live-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+      .live-top h3 {
+        margin: 0;
+        color: var(--live-text);
+        font-size: 13px;
+      }
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--live-text);
+        font-size: 10px;
+      }
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 3px rgba(14, 143, 116, 0.16);
+      }
+      .qr-stage {
+        width: 148px;
+        height: 148px;
+        margin: 12px auto 8px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--live-line);
+        border-radius: 8px;
+        background: #fff;
+      }
+      .qr-caption {
+        display: block;
+        text-align: center;
+        color: var(--soft);
+        font-size: 10px;
+      }
+      .access-code {
+        display: block;
+        margin-top: 4px;
+        color: var(--text-strong);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 20px;
+        letter-spacing: 0.14em;
+      }
+      .code-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px solid var(--live-line);
+      }
+      .metric-label {
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      /* —— Sections —— */
+      section { padding: 72px 0; }
+      .section-head {
+        max-width: 640px;
+        margin-bottom: 28px;
+      }
+      .section-head h2 {
+        margin: 0;
+        font-size: 26px;
+        letter-spacing: -0.03em;
+        color: var(--text-strong);
+      }
+      .section-head p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .feature {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+        box-shadow: var(--sh1);
+      }
+      .feature-icon {
+        width: 32px;
+        height: 32px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        color: var(--blue-dark);
+        background: var(--blue-soft);
+      }
+      .feature:nth-child(2) .feature-icon {
+        color: var(--live-text);
+        background: var(--green-soft);
+      }
+      .feature strong {
+        display: block;
+        color: var(--text-strong);
+        font-size: 15px;
+      }
+      .feature p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .more {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .more article {
+        padding: 18px;
+        border-radius: 14px;
+        background: var(--canvas);
+        border: 1px solid var(--line);
+      }
+      .more h3 {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-strong);
+      }
+      .more p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .step {
+        position: relative;
+        padding: 20px;
+        border-radius: 14px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+      .step-n {
+        display: inline-grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        background: var(--navy);
+        color: var(--brand-blue);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .step strong { display: block; color: var(--text-strong); font-size: 14px; }
+      .step p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+      .download {
+        background: var(--panel);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .download-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+        gap: 28px;
+        align-items: center;
+        padding: 28px;
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, #1f2b3d, #0d1420);
+        color: #e7eef8;
+        box-shadow: var(--sh3);
+      }
+      .download-card h2 {
+        margin: 0;
+        font-size: 24px;
+        letter-spacing: -0.03em;
+      }
+      .download-card p {
+        margin: 10px 0 0;
+        color: #9aa7b8;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .dl-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .dl-note {
+        margin-top: 10px;
+        color: #7d8a9c;
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      footer {
+        padding: 28px 0 40px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      footer a { color: var(--text-body); text-decoration: none; }
+      footer a:hover { color: var(--blue); }
+
+      .icon {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      html[lang="en"] [data-zh],
+      html[lang="zh-CN"] [data-en] { display: none !important; }
+
+      @media (max-width: 960px) {
+        .hero-grid,
+        .download-card { grid-template-columns: 1fr; }
+        .mock { margin-bottom: 28px; }
+        .hero::after { display: none; }
+        .hero { padding-bottom: 36px; }
+        .nav-links a[href="#features"],
+        .nav-links a[href="#download"] { display: none; }
+      }
+      @media (max-width: 760px) {
+        .features, .more, .steps { grid-template-columns: 1fr; }
+        .mock-body { grid-template-columns: 1fr; }
+        .mock-side { display: none; }
+        .share-panel { width: min(248px, calc(100% - 28px)); }
+        section { padding: 52px 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="#">
+          <svg class="brand-mark" width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="bmTile" x1="0.18" y1="0" x2="0.82" y2="1">
+                <stop offset="0" stop-color="#1f2b3d" />
+                <stop offset="1" stop-color="#0d1420" />
+              </linearGradient>
+              <linearGradient id="bmSheen" x1="0" y1="0" x2="0.18" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity="0.18" />
+                <stop offset="0.45" stop-color="#fff" stop-opacity="0.03" />
+                <stop offset="1" stop-color="#fff" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect width="64" height="64" rx="16" fill="url(#bmTile)" />
+            <rect x="11" y="14" width="27" height="27" rx="7.5" stroke="#7fb2ff" stroke-width="3.6" />
+            <rect x="26" y="23" width="27" height="27" rx="7.5" stroke="#16202f" stroke-width="6.8" />
+            <rect x="26" y="23" width="27" height="27" rx="7.5" stroke="#7ee7c7" stroke-width="3.6" />
+            <rect width="64" height="64" rx="16" fill="url(#bmSheen)" />
+            <rect x="0.6" y="0.6" width="62.8" height="62.8" rx="15.4" stroke="#fff" stroke-opacity="0.1" />
+          </svg>
+          VibeShare
+        </a>
+        <div class="nav-spacer"></div>
+        <nav class="nav-links">
+          <a href="#features"><span data-zh>卖点</span><span data-en>Features</span></a>
+          <a href="#download"><span data-zh>下载</span><span data-en>Download</span></a>
+          <a href="https://github.com/Heiuswork/VibeShare" target="_blank" rel="noreferrer">GitHub</a>
+          <button class="lang" type="button" id="langToggle" aria-label="Switch language">
+            <span data-zh>中文 / <b>EN</b></span>
+            <span data-en><b>中文</b> / EN</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="kicker">
+            <span class="kicker-dot"></span>
+            <span data-zh>macOS · 局域网分享</span>
+            <span data-en>macOS · LAN sharing</span>
+          </div>
+          <h1 data-zh>把刚 Vibe 出来的 HTML，立刻分享给同一 Wi-Fi 里的手机</h1>
+          <h1 data-en>Share your Vibe HTML to any phone on the same Wi-Fi</h1>
+          <p class="hero-lead" data-zh>
+            不用部署，不上云。扫码就能看。文件只在本机提供，访问者不用装应用。
+          </p>
+          <p class="hero-lead" data-en>
+            No deploy, no cloud. Scan and it’s live. Files stay on your machine — visitors don’t install anything.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-on-navy" href="#download">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>
+              <span data-zh>下载 macOS 应用</span>
+              <span data-en>Download for macOS</span>
+            </a>
+            <a class="btn btn-on-navy-ghost" href="https://github.com/Heiuswork/VibeShare" target="_blank" rel="noreferrer">
+              <span data-zh>查看源码</span>
+              <span data-en>View source</span>
+            </a>
+          </div>
+          <div class="chips">
+            <span class="chip" data-zh>无需部署</span>
+            <span class="chip" data-en>No deploy</span>
+            <span class="chip" data-zh>访问码保护</span>
+            <span class="chip" data-en>Access code</span>
+            <span class="chip" data-zh>实时同步</span>
+            <span class="chip" data-en>Live updates</span>
+            <span class="chip">MIT</span>
+          </div>
+        </div>
+
+        <div class="mock" aria-hidden="true">
+          <div class="mock-bar">
+            <span class="traffic"><i></i><i></i><i></i></span>
+            <span class="mock-title">VibeShare</span>
+          </div>
+          <div class="mock-body">
+            <aside class="mock-side">
+              <div class="side-brand">
+                <svg class="brand-mark" width="22" height="22" viewBox="0 0 64 64" fill="none">
+                  <rect width="64" height="64" rx="18" fill="#1f2b3d" />
+                  <rect x="9" y="11" width="29" height="29" rx="8.5" stroke="#7fb2ff" stroke-width="5.6" />
+                  <rect x="26" y="24" width="29" height="29" rx="8.5" stroke="#16202f" stroke-width="8.6" />
+                  <rect x="26" y="24" width="29" height="29" rx="8.5" stroke="#7ee7c7" stroke-width="5.6" />
+                </svg>
+                VibeShare
+              </div>
+              <div class="nav-item active">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                <span data-zh>预览</span><span data-en>Preview</span>
+              </div>
+              <div class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>
+                <span data-zh>访问者</span><span data-en>Visitors</span>
+              </div>
+              <div class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+                <span data-zh>最近项目</span><span data-en>Recents</span>
+              </div>
+            </aside>
+            <div class="mock-stage">
+              <div class="empty-card">
+                <strong data-zh>在你的任意设备上查看你的产出，无需部署</strong>
+                <strong data-en>View your work on any device, no deploy needed</strong>
+                <p data-zh>拖入文件夹或 HTML</p>
+                <p data-en>Drop a folder or HTML file</p>
+                <div class="empty-actions">
+                  <span class="mini-btn primary" data-zh>选择网站目录</span>
+                  <span class="mini-btn primary" data-en>Choose site folder</span>
+                  <span class="mini-btn secondary" data-zh>选择 HTML 文件</span>
+                  <span class="mini-btn secondary" data-en>Choose HTML file</span>
+                </div>
+              </div>
+              <div class="share-panel">
+                <div class="share-head">
+                  <span data-zh>共享</span>
+                  <span data-en>Share</span>
+                </div>
+                <div class="live-card">
+                  <div class="live-top">
+                    <h3 data-zh>共享中</h3>
+                    <h3 data-en>Sharing</h3>
+                    <span class="live-badge"><span class="status-dot"></span> <span data-zh>在线</span><span data-en>Online</span></span>
+                  </div>
+                  <div class="qr-stage">
+                    <svg width="124" height="124" viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true">
+                      <rect width="29" height="29" fill="#fff"/>
+                      <g fill="#1f2b3d">
+                        <path d="M2 2h9v9H2zm2 2v5h5V4z"/>
+                        <rect x="5" y="5" width="3" height="3"/>
+                        <path d="M18 2h9v9h-9zm2 2v5h5V4z"/>
+                        <rect x="21" y="5" width="3" height="3"/>
+                        <path d="M2 18h9v9H2zm2 2v5h5v-5z"/>
+                        <rect x="5" y="21" width="3" height="3"/>
+                        <rect x="13" y="3" width="2" height="2"/>
+                        <rect x="16" y="5" width="2" height="2"/>
+                        <rect x="13" y="7" width="2" height="2"/>
+                        <rect x="15" y="9" width="2" height="2"/>
+                        <rect x="18" y="13" width="2" height="2"/>
+                        <rect x="21" y="13" width="2" height="2"/>
+                        <rect x="24" y="13" width="3" height="2"/>
+                        <rect x="13" y="13" width="3" height="3"/>
+                        <rect x="3" y="13" width="2" height="2"/>
+                        <rect x="7" y="13" width="2" height="2"/>
+                        <rect x="10" y="15" width="2" height="2"/>
+                        <rect x="13" y="18" width="2" height="2"/>
+                        <rect x="16" y="16" width="2" height="2"/>
+                        <rect x="19" y="18" width="2" height="2"/>
+                        <rect x="22" y="16" width="2" height="2"/>
+                        <rect x="25" y="18" width="2" height="2"/>
+                        <rect x="16" y="21" width="2" height="2"/>
+                        <rect x="13" y="23" width="2" height="2"/>
+                        <rect x="19" y="23" width="3" height="2"/>
+                        <rect x="24" y="21" width="3" height="3"/>
+                        <rect x="16" y="25" width="2" height="2"/>
+                        <rect x="21" y="26" width="2" height="2"/>
+                        <rect x="25" y="25" width="2" height="2"/>
+                      </g>
+                      <rect x="18" y="18" width="2" height="2" fill="#0e8f74"/>
+                    </svg>
+                  </div>
+                  <span class="qr-caption" data-zh>扫码打开页面</span>
+                  <span class="qr-caption" data-en>Scan to open</span>
+                  <div class="code-row">
+                    <div>
+                      <span class="metric-label" data-zh>访问码</span>
+                      <span class="metric-label" data-en>Code</span>
+                      <strong class="access-code">K7M2</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-zh>三件事，够用</h2>
+          <h2 data-en>Three things. That’s the product.</h2>
+          <p data-zh>和打开应用时看到的一样：先把页面送到手机上，再管谁能进、改了要不要刷新。</p>
+          <p data-en>Same three lines you see in the app: get it on a phone, decide who gets in, keep it in sync.</p>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <span class="feature-icon">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6"/><rect x="15" y="3" width="6" height="6"/><rect x="3" y="15" width="6" height="6"/><path d="M15 15h2v2h-2zM19 15h2M15 19h2v2M19 19h2v2"/></svg>
+            </span>
+            <strong data-zh>无需部署</strong>
+            <strong data-en>No deploy</strong>
+            <p data-zh>同一网络扫码，手机立刻能看</p>
+            <p data-en>Scan the QR on the same network</p>
+          </article>
+          <article class="feature">
+            <span class="feature-icon">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+            </span>
+            <strong data-zh>访问码保护</strong>
+            <strong data-en>Access code</strong>
+            <p data-zh>临时口令，不是谁扫都能进</p>
+            <p data-en>A temporary code; not everyone who scans gets in</p>
+          </article>
+          <article class="feature">
+            <span class="feature-icon">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M20 11a8.1 8.1 0 0 0-14.9-3L3 10"/><path d="M3 5v5h5M4 13a8.1 8.1 0 0 0 14.9 3L21 14"/><path d="M21 19v-5h-5"/></svg>
+            </span>
+            <strong data-zh>实时同步</strong>
+            <strong data-en>Live updates</strong>
+            <p data-zh>Vibe 出新变动，不用手动刷新</p>
+            <p data-en>Vibe a change, devices refresh themselves</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-zh>分享时真正用得到的</h2>
+          <h2 data-en>What you actually use while sharing</h2>
+        </div>
+        <div class="more">
+          <article>
+            <h3 data-zh>文件夹或单个 HTML</h3>
+            <h3 data-en>Folder or a single HTML file</h3>
+            <p data-zh>本机预览，局域网扫码打开。访问者不用装应用。</p>
+            <p data-en>Preview locally, open on the LAN by scanning a QR. Visitors don’t install anything.</p>
+          </article>
+          <article>
+            <h3 data-zh>开发服务器也能转</h3>
+            <h3 data-en>Proxy a local dev server</h3>
+            <p data-zh>Vite / Next 等动态路由和热更新一起过去。</p>
+            <p data-en>Vite / Next dynamic routes and HMR come along.</p>
+          </article>
+          <article>
+            <h3 data-zh>谁在看，一眼能管</h3>
+            <h3 data-en>See who’s on, and cut them off</h3>
+            <p data-zh>在线设备列表、屏蔽本次访问、拉入黑名单。</p>
+            <p data-en>Online devices, block this share, or blacklist a device.</p>
+          </article>
+          <article>
+            <h3 data-zh>多网卡自己选</h3>
+            <h3 data-en>Pick the adapter</h3>
+            <p data-zh>指定分享走哪一张网卡，二维码不会指错网。</p>
+            <p data-en>Choose which network adapter to share on so the QR points at the right LAN.</p>
+          </article>
+          <article>
+            <h3 data-zh>静态资源诊断</h3>
+            <h3 data-en>Asset diagnostics</h3>
+            <p data-zh>缺文件、写死 localhost 的引用，打开前先看一眼。</p>
+            <p data-en>Catch missing files and hardcoded localhost URLs before anyone scans.</p>
+          </article>
+          <article>
+            <h3 data-zh>中文 / English</h3>
+            <h3 data-en>Chinese / English</h3>
+            <p data-zh>界面语言可切换。文件只在局域网传输，不上传云端。</p>
+            <p data-en>Switch the UI language. Files stay on the local network and never go to the cloud.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-zh>三步，手机上就能看</h2>
+          <h2 data-en>Three steps, then it’s on the phone</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <span class="step-n">1</span>
+            <strong data-zh>选站点</strong>
+            <strong data-en>Pick a site</strong>
+            <p data-zh>拖入文件夹或 HTML，本机先预览。</p>
+            <p data-en>Drop a folder or HTML file and preview it locally.</p>
+          </article>
+          <article class="step">
+            <span class="step-n">2</span>
+            <strong data-zh>开始共享</strong>
+            <strong data-en>Start sharing</strong>
+            <p data-zh>出示二维码和临时访问码，设好时长。</p>
+            <p data-en>Show the QR and a temporary access code. Set how long it stays up.</p>
+          </article>
+          <article class="step">
+            <span class="step-n">3</span>
+            <strong data-zh>扫码打开</strong>
+            <strong data-en>Scan to open</strong>
+            <p data-zh>同一 Wi-Fi 的手机、平板或其他电脑，输入访问码就能看。</p>
+            <p data-en>Phones, tablets, or other computers on the same Wi-Fi enter the code and they’re in.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="download" id="download">
+      <div class="wrap">
+        <div class="download-card">
+          <div>
+            <h2 data-zh>下载 VibeShare</h2>
+            <h2 data-en>Download VibeShare</h2>
+            <p data-zh>macOS 13+。Apple Silicon 和 Intel 各打一份。未签名，别人电脑上打开时，到系统设置 → 隐私与安全性，点「仍要打开」。</p>
+            <p data-en>macOS 13+. Separate builds for Apple Silicon and Intel. The app is unsigned — on another Mac, open System Settings → Privacy & Security and click Open Anyway.</p>
+          </div>
+          <div class="dl-actions">
+            <a class="btn btn-on-navy" href="https://github.com/Heiuswork/VibeShare/releases/download/0.9.0/VibeShare_0.9.0_aarch64.dmg">
+              <span data-zh>Apple Silicon · DMG</span>
+              <span data-en>Apple Silicon · DMG</span>
+            </a>
+            <a class="btn btn-on-navy-ghost" href="https://github.com/Heiuswork/VibeShare/releases/download/0.9.0/VibeShare_0.9.0_x64.dmg">
+              <span data-zh>Intel · DMG</span>
+              <span data-en>Intel · DMG</span>
+            </a>
+            <a class="btn btn-on-navy-ghost" href="https://github.com/Heiuswork/VibeShare/releases/tag/0.9.0" target="_blank" rel="noreferrer">
+              <span data-zh>GitHub Releases</span>
+              <span data-en>GitHub Releases</span>
+            </a>
+            <p class="dl-note" data-zh>当前版本 0.9.0。安装包放在 Releases，不进 git。</p>
+            <p class="dl-note" data-en>Current version 0.9.0. Installers live on Releases, not in git.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap foot">
+        <span>© 2026 Heiuswork · MIT</span>
+        <span>
+          <a href="https://github.com/Heiuswork/VibeShare">GitHub</a>
+          ·
+          <a href="https://github.com/Heiuswork/VibeShare/releases">Releases</a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      const root = document.documentElement;
+      const toggle = document.getElementById("langToggle");
+      const meta = document.querySelector('meta[name="description"]');
+      const copy = {
+        "zh-CN": "把刚 Vibe 出来的 HTML 立刻分享给同一 Wi-Fi 里的手机。不用部署，不上云，扫码就能看。",
+        en: "Share HTML from your Mac to any phone on the same Wi-Fi. No deploy, no cloud — scan and it's live.",
+      };
+
+      function setLang(lang) {
+        root.lang = lang;
+        localStorage.setItem("vs-lang", lang);
+        if (meta) meta.setAttribute("content", copy[lang]);
+        document.title = lang === "en" ? "VibeShare — share your Vibe HTML" : "VibeShare";
+      }
+
+      const saved = localStorage.getItem("vs-lang");
+      setLang(saved || ((navigator.language || "").toLowerCase().startsWith("zh") ? "zh-CN" : "en"));
+      toggle.addEventListener("click", () => setLang(root.lang === "en" ? "zh-CN" : "en"));
+    </script>
+  </body>
+</html>
